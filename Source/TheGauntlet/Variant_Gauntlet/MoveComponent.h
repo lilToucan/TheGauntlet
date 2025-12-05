@@ -32,10 +32,12 @@ protected:
 	float timer = 0.f;
 	float duration = 0.1f;
 	int currentWaypoint = 0;
+	bool bIsResetting = false;
 
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void Trigger() override;
+	virtual void Reset() override;
 
 protected:
 	virtual void BeginPlay() override;

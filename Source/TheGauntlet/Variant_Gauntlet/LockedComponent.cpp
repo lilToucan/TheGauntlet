@@ -36,11 +36,26 @@ void ULockedComponent::BeginPlay()
 			continue;
 
 		key->OnUnlock.AddUObject(this, &ULockedComponent::Unlock);
+		key->OnReset.AddUObject(this, &ULockedComponent::Reset);
 		LockCounter++;
 	}
 }
 
 void ULockedComponent::Trigger(){}
+
+void ULockedComponent::Reset()
+{
+	LocksUnlocked--;
+
+	if (LocksUnlocked >= LockCounter)
+		return;
+	GEngine->AddOnScreenDebugMessage(2, 1, FColor::Cyan, "LockedAgain");
+	for (TScriptInterface<IObstacle> Component : LockedActorComponents)
+	{
+		Component.GetInterface()->Reset();
+		Component.GetInterface()->bIsObstacleActive = false;
+	}
+}
 
 void ULockedComponent::Unlock()
 {

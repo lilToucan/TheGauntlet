@@ -31,10 +31,11 @@ protected: // variables
 public:	// functions
 	ULockedComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void Trigger() override;
+	virtual void Reset() override;
 
 protected: // functions
 	void Unlock();
 	virtual void BeginPlay() override;
-	virtual void Trigger() override;
 		
 };

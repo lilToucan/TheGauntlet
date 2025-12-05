@@ -32,7 +32,8 @@ protected: // variables
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
 	UInputAction* InteractInputAction;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
+	UInputAction* PauseInputAction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Healt")
 	UHpComponent* HealthComponent;
 
@@ -40,6 +41,7 @@ protected: // variables
 
 public:	// functions
 	virtual void Tick(float DeltaTime) override;
+	void PauseInputFunction(const FInputActionValue& InputActionValue);
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	ATheGauntlet_Character();
 

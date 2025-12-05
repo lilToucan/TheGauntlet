@@ -5,8 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Interacable.h"
-
-
+#include "TheGauntlet_GameInstance.h"
 
 
 ATheGauntlet_Character::ATheGauntlet_Character()
@@ -27,6 +26,11 @@ void ATheGauntlet_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ATheGauntlet_Character::PauseInputFunction(const FInputActionValue& InputActionValue)
+{
+	Cast<UTheGauntlet_GameInstance>(GetGameInstance())->PauseGame();
 }
 
 void ATheGauntlet_Character::MoveInputFunction(const FInputActionValue& InputActionValue)
@@ -50,7 +54,7 @@ void ATheGauntlet_Character::AimInputFunction(const FInputActionValue& InputActi
 
 	// give mouse position to the Controller's ControlRotation
 	AddControllerYawInput(input.X);
-	AddControllerPitchInput(input.Y);
+	AddControllerPitchInput(-input.Y);
 }
 
 void ATheGauntlet_Character::InteractInputFunction(const FInputActionValue& InputActionValue)
@@ -108,6 +112,10 @@ void ATheGauntlet_Character::SetupPlayerInputComponent(UInputComponent* PlayerIn
 								  &ATheGauntlet_Character::MoveInputFunction);
 		enhancedInput->BindAction(MoveInputAction, ETriggerEvent::Completed, this,
 								  &ATheGauntlet_Character::MoveInputFunction);
+
+		// pasuse input :!
+		enhancedInput-> BindAction(PauseInputAction,ETriggerEvent::Triggered, this,
+								  &ATheGauntlet_Character::PauseInputFunction);
 	}
 
 }

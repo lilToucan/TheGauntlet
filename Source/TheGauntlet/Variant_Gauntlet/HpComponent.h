@@ -27,6 +27,7 @@ protected: // variables
 public: // functions
 	
 	virtual void Trigger() override;
+	virtual void Reset() override;
 	void Death();
 	UHpComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,FActorComponentTickFunction* ThisTickFunction) override;

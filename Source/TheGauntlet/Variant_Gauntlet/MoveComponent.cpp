@@ -15,22 +15,29 @@ void UMoveComponent::BeginPlay()
 	ActorOwner = GetOwner();
 	beginLocation = ActorOwner->GetActorLocation();
 	startLocation = ActorOwner->GetActorLocation();
-	endLocation = Waypoints[currentWaypoint].WayPoint+beginLocation;
-	duration = Waypoints[currentWaypoint].duration;
 	currentWaypoint = 1;
+	endLocation = Waypoints[currentWaypoint].WayPoint + beginLocation;
+	duration = Waypoints[currentWaypoint].duration;
 }
 
 void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (!bIsObstacleActive)
+	if (!bIsObstacleActive && !bIsResetting)
 		return;
 
+	if (bIsResetting)
+	{
+		int x = 0;
+	}
+	
 	timer += DeltaTime;
 	if (timer > duration) // if the timer is over reset timer and get the next waypoint
 	{
-		timer = 0.f;
+		if (bIsResetting)
+			bIsResetting = false;
+			
 		currentWaypoint++;
 
 		// if the waypoint index has surpassed the last then set it back to the first 
@@ -45,8 +52,9 @@ void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 			currentWaypoint = 0;
 		}
 
-		startLocation = ActorOwner->GetActorLocation() ;
-		endLocation = Waypoints[currentWaypoint].WayPoint+beginLocation;
+		timer = 0.f;
+		startLocation = ActorOwner->GetActorLocation();
+		endLocation = Waypoints[currentWaypoint].WayPoint + beginLocation;
 		duration = Waypoints[currentWaypoint].duration;
 	}
 	FVector newLocation = FMath::Lerp(startLocation, endLocation, timer / duration);
@@ -57,5 +65,14 @@ void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void UMoveComponent::Trigger()
 {
-	
+}
+
+void UMoveComponent::Reset()
+{
+	timer = 0.f;
+	currentWaypoint = 0;
+	startLocation = ActorOwner->GetActorLocation();
+	endLocation = Waypoints[currentWaypoint].WayPoint + beginLocation;
+	duration = Waypoints[currentWaypoint].duration;
+	bIsResetting = true;
 }

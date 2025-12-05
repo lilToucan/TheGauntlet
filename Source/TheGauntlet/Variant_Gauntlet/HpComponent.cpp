@@ -20,16 +20,27 @@ void UHpComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UHpComponent::Trigger()
 {
+	if (!bIsObstacleActive)
+		return;
+
 	CurrentHP -= 1;
 
 	if (CurrentHP <= 0)
-	{
 		Death();
-		return;
-	}
+}
+
+void UHpComponent::Reset()
+{
+	CurrentHP = MaxHp;
+
+	GetOwner()->SetActorHiddenInGame(false);
+	GetOwner()->SetActorEnableCollision(true);
+	GetOwner()->SetActorTickEnabled(true);
 }
 
 void UHpComponent::Death()
 {
-	GetOwner()->Destroy();
+	GetOwner()->SetActorHiddenInGame(true);
+	GetOwner()->SetActorEnableCollision(false);
+	GetOwner()->SetActorTickEnabled(false);
 }

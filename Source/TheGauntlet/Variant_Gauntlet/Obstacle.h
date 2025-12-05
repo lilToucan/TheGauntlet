@@ -22,6 +22,7 @@ class THEGAUNTLET_API IObstacle
 
 public:
 	virtual void Trigger() = 0;
+	virtual void Reset() = 0;
 	// whether the obstacle is active or not
 	bool bIsObstacleActive = true;
 };

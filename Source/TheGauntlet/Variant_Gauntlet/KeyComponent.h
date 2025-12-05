@@ -10,19 +10,26 @@
 DECLARE_MULTICAST_DELEGATE(FDelegate);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, RestrictedToClasses = "U"))
-class THEGAUNTLET_API UKeyComponent : public UActorComponent, public  IObstacle
+class THEGAUNTLET_API UKeyComponent : public UActorComponent, public IObstacle
 {
 	GENERATED_BODY()
-
-public:
+	
+// variables
+public: 
 	FDelegate OnUnlock;
+	FDelegate OnReset;
 	
 protected:
-
-
-public:
+	UPROPERTY(EditAnywhere, Category = "Key Component")
+	bool bIsTimed;
+	UPROPERTY(EditAnywhere, Category = "Key Component")
+	float Duration = 5.f;
+	FTimerHandle DelayedReset;
+//functions
+public: 
 	UKeyComponent();
-	virtual void Trigger() override;;
+	virtual void Trigger() override;
+	virtual void Reset() override;
 
 protected:
 	virtual void BeginPlay() override;
